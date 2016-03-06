@@ -5,6 +5,7 @@ var usemin = require('gulp-usemin')
 var rev = require('gulp-rev')
 var uglify = require('gulp-uglify')
 var del = require('del')
+var livereload = require('gulp-livereload')
 
 var webpack = require('webpack')
 var WebpackServer = require('webpack-dev-server')
@@ -22,6 +23,7 @@ gulp.task('assets', function() {
 })
 
 gulp.task('watch', ['clean'], function() {
+  livereload.listen();
   var compiler = webpack(require('./webpack.config.js'))
 
   var server = new WebpackServer(compiler, {
