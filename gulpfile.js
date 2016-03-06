@@ -10,10 +10,11 @@ var livereload = require('gulp-livereload')
 var webpack = require('webpack')
 var WebpackServer = require('webpack-dev-server')
 
-gulp.task('clean', function(done) {
-  del(['dist/*', '.tmp'], done)
+gulp.task('clean', function() {
+  del(['dist/*', '.tmp']).then(function(paths) {
+	   console.log('Deleted files and folders:\n', paths.join('\n'));
+});
 })
-
 gulp.task('assets', function() {
   return gulp.src('app/index.html')
     .pipe(usemin({
@@ -22,7 +23,7 @@ gulp.task('assets', function() {
     .pipe(gulp.dest('dist'))
 })
 
-gulp.task('watch', ['clean'], function() {
+gulp.task('watch',['clean'], function() {
   livereload.listen();
   var compiler = webpack(require('./webpack.config.js'))
 
@@ -36,7 +37,7 @@ gulp.task('watch', ['clean'], function() {
   server.listen(8080)
 })
 
-gulp.task('build', ['clean'], function(done) {
+gulp.task('build', ['clean'], function() {
   webpack(require('./webpack.dist.config.js')).run(function(err, stats) {
     if (err) throw err
     gulp.start(['assets'])
